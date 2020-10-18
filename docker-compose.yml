@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  flask:
+    container_name: flask
+    restart: always
+    build: ./flask
+    command: gunicorn -t 2 -b 0.0.0.0:5000 app:app --timeout 300
+    environment:
+      MONGODB_HOST: mongodb
+    ports:
+      - "5000:5000"
+  mongodb:
+    image: mongo:4.0.8
+    restart: always
+    ports:
+      - "27017:27017"
+  nginx:
+    container_name: nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
